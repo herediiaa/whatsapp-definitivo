@@ -2,8 +2,7 @@ import pyautogui,time,sys #librerias
 
 def leerParametro():
     #declaracion de variables globales
-    global numeroTelefono #almacenamiento del numero de telefono
-    global mensajeTexto#almacenamiento del mensaje de texto que se va a mandar
+    global numerosTelefono #almacenamiento del numero de telefono
     global contenido
     parametro = sys.argv[1] # identifica el nombre del parametro
     path = "C:/Users/hered/OneDrive/Desktop/"+ parametro  #ESTA RUTA HAY QUE CONFIGURAR
@@ -11,8 +10,7 @@ def leerParametro():
       
     contenido = archivo.read() #leemos el contenido del parametro.txt
     lista = contenido.split("\n")#hacemos una lista con todo lo que leyo del parametro.txt
-    numeroTelefono = lista[0]#el primer item sera el numero de telefono
-    mensajeTexto = lista[1:]#y los siguientes items cada renglon
+    numerosTelefono = lista[0]#el primer item sera el numero de telefono
     archivo.close()#cerramos el archivo
 def abrirWhatsapp():
     ubicacionLogoWhastapp = pyautogui.locateCenterOnScreen("media/logo.png") #busca el logo de la aplicacion en la pantalla
@@ -58,21 +56,32 @@ def buscarContacto():
     
     
     #ESCRIBIR CONTACTO
-    pyautogui.typewrite(numeroTelefono,interval=0.10) #escribir el numero
-    time.sleep(2.5) #esperar que lo encuentre
-    pyautogui.press("Tab") #lo selecciono
-    time.sleep(1)
-    pyautogui.hotkey("enter")#entro al contacto
-    time.sleep(2)#espero que cargue el chat
-    
 def mandarMensaje():
-    #hago la secuencia para escribir el mensaje en el formato deseado
-    for i in mensajeTexto: 
-        pyautogui.typewrite(i)
-        pyautogui.hotkey("Ctrl","Enter")
-    time.sleep(0.5)
-    pyautogui.press("Enter") #lo mando
+    for number in numerosTelefono:
+        pyautogui.typewrite(number,interval=0.25) #escribir el numero
+        time.sleep(3.5) #esperar que lo encuentre
+        pyautogui.press("Tab") #lo selecciono
+        time.sleep(1)
+        pyautogui.hotkey("enter")#entro al contacto
+        time.sleep(2)#espero que cargue el chat
 
+        with pyautogui.hold('ctrl'):
+            time.sleep(0.5)
+            pyautogui.press(['v']) 
+        time.sleep(1)
+        pyautogui.press("tab")
+        time.sleep(0.5)
+        pyautogui.press("enter")
+        time.sleep(2)
+        lupaGris = pyautogui.locateOnScreen("media/lupaGris.png")#foto del segundo
+        time.sleep(0.5)
+        o,p = pyautogui.center(lupaGris)
+        O=int(o)
+        P=int(p)
+        time.sleep(0.5)
+        pyautogui.leftClick(O,P) #me dirijo a la lupa gris
+            
+  
     
 def whatappBot():
     leerParametro()
